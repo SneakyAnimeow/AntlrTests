@@ -42,8 +42,8 @@ public class TinyCVisitor : ITinyCVisitor<object?> {
 
         // Console.WriteLine(string.Join(", ", children.Select(x => x.GetText())));
         
-        // skips {} in program's header
-        if(context.Parent is TinyCParser.ProgramContext) {
+        // skip {}
+        if(children.First().GetText() == "{" && children.Last().GetText()=="}") {
             foreach (var parseTree in children.SkipLast(1).Skip(1)) {
                 parseTree.Accept(this);
             }

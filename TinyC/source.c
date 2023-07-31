@@ -29,4 +29,10 @@
     {
         c = c - 1;
     }while(c < 0);
+
+    while(flag < c)
+    {
+        c = c - 1;
+        flag = flag + 1;
+    }
 }
