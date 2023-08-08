@@ -14,6 +14,10 @@
 
     <ItemGroup>
       <Content Include="TinyC\TinyC.g4" />
+      <None Remove="OwOLang\source.owo" />
+      <Content Include="OwOLang\source.owo">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +30,15 @@
       <Content Include="MyTinyC\source.c">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="NekoScript\source.neko">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="NekoScript\source.nekos">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

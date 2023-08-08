@@ -1,0 +1,31 @@
+//Comment
+/*
+Multi-line Comment
+*/
+
+OwO MyScript //Script name
+
+datsa Cat
+    i can haz Name hoos race iz textz iz nao ^w^Default Name^w^
+    i can haz Nickname hoos race iz textz //Strings are empty by default
+    i can haz Age hoos race iz numbah //Numbers are 0 by default
+    i can haz IsFriendly hoos race iz opinionz //Booleans are false by default
+datsall
+
+i can haz Kitty hoos race iz Cat
+Name from Kitty iz nao ^w^Cute Kitty^w^
+
+do dis 15 timez doez
+    Age from Kitty iz nao Age from Kitty ^+^ 1
+endz
+
+sayz ^w^Kitty's age is ^w^ ^+^ Age from Kitty
+
+i can haz CatArray hoos race iz lotz da Cat
+
+0 from CatArray iz nao Kitty
+
+sayz ^w^0 from CatArray ^w^ ^+^ 0 from CatArray
+
+//if Kitty iz Friendly
+//    sayz ^w^Kitty is friendly^w^
