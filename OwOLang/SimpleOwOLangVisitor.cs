@@ -2,6 +2,7 @@ using Antlr4.Runtime.Tree;
 
 namespace AntlrTests.OwOLang;
 
+[Obsolete("Bad code design, marked for refactoring")]
 public class SimpleOwOLangVisitor : IOwOLangVisitor<object> {
     private readonly Dictionary<string, Type> _types = new();
     
@@ -54,7 +55,38 @@ public class SimpleOwOLangVisitor : IOwOLangVisitor<object> {
     }
 
     public object VisitExpression(OwOLangParser.ExpressionContext context) {
-        throw new NotImplementedException();
+        var children = context.children;
+        
+        if (children.Count == 1) {
+            return children[0].Accept(this);
+        }
+        
+        if (children.Count == 3) {
+            var left = children[0].Accept(this);
+            var right = children[2].Accept(this);
+
+            var op = children[1].GetText();
+
+            return op switch {
+                "^+^" => (dynamic) left + (dynamic) right,
+                "^-^" => (dynamic) left - (dynamic) right,
+                "^*^" => (dynamic) left * (dynamic) right,
+                "^/^" => (dynamic) left / (dynamic) right,
+                "^%^" => (dynamic) left % (dynamic) right,
+                "^==^" => (dynamic) left == (dynamic) right,
+                "^!=^" => (dynamic) left != (dynamic) right,
+                "^<^" => (dynamic) left < (dynamic) right,
+                "^>^" => (dynamic) left > (dynamic) right,
+                "^<=^" => (dynamic) left <= (dynamic) right,
+                "^>=^" => (dynamic) left >= (dynamic) right,
+                "^&&^" => (dynamic) left && (dynamic) right,
+                "^||^" => (dynamic) left || (dynamic) right,
+                "from" => throw new NotImplementedException(),
+                _ => throw new Exception($"Unknown operator: {op}")
+            };
+        }
+        
+        throw new Exception($"Unknown expression: {context.GetText()}");
     }
 
     public object VisitType(OwOLangParser.TypeContext context) {

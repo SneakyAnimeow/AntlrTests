@@ -2,6 +2,7 @@ using Antlr4.Runtime;
 
 namespace AntlrTests.OwOLang; 
 
+[Obsolete("Bad code design, marked for refactoring")]
 public class Program {
     public static void Main() {
         var source = File.ReadAllText("./OwOLang/source.owo");
