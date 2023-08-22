@@ -1,0 +1,1147 @@
+////REGION: builtin
+
+////OUTSIDE REGION: array
+$exports.array = $new(null)
+
+    //array $array(any*) -> Create an array from a list of values
+    $exports.array.array_new = function(array) { return array; }
+
+    //array $amake(n : int) -> Create an array of size n
+    $exports.array.array_make = function(n) { return $amake(n) }
+
+    //array $acopy(array) -> Create a copy of an array
+    $exports.array.array_copy = function(array) { return $acopy(array) }
+
+    //int $asize(array) -> Get the size of an array
+    $exports.array.array_size = function(array) { return $asize(array) }
+
+    //array $asub(array, p : int, l : int) -> Get a sub-array, from position p, of length l, an error occurs if out of array bounds
+    $exports.array.array_sub = function(array, p, l) { return $asub(array, p, l) }
+
+    //array $ablit(dst : array, dst_pos : int, src : array, src_pos : int, len : int) -> Copy a sub-array, from position src_pos, of length len, into dst, at position dst_pos, an error occurs if out of array bounds
+    $exports.array.array_blit = function(dst, dst_pos, src, src_pos, len) { return $ablit(dst, dst_pos, src, src_pos, len) }
+
+    //array $aconcat(array array) -> Concatenate a list of arrays
+    $exports.array.array_concat = function(array) { return $aconcat(array) }
+
+////OUTSIDE ENDREGION: array
+
+////OUTSIDE REGION: string
+$exports.string = $new(null)
+
+    //string $string(any) -> Convert a value to a string
+    $exports.string.to_string = function(arg) { return $string(arg); }
+
+    //string $smake(n : int) -> Create a string of size n
+    $exports.string.string_make = function(n) { return $smake(n) }
+
+    //int $ssize(string) -> Get the size of a string
+    $exports.string.string_size = function(string) { return $ssize(string) }
+
+    //string $scopy(string) -> Create a copy of a string
+    $exports.string.string_copy = function(string) { return $scopy(string) }
+
+    //string $ssub(string, p : int, l : int) -> Get a sub-string, from position p, of length l, an error occurs if out of string bounds
+    $exports.string.string_sub = function(string, p, l) { return $ssub(string, p, l) }
+
+    //int? $sget(string, n : int) -> Get the character at position n, or null if out of bounds
+    $exports.string.string_get = function(string, n) { return $sget(string, n) }
+
+    //int? $sset(string, n : int, c : int) -> Set the character at position n, or null if out of bounds
+    $exports.string.string_set = function(string, n, c) { return $sset(string, n, c) }
+
+    //void $sblit(dst : string, dst_pos : int, src : string, src_pos : int, len : int) -> Copy a sub-string, from position src_pos, of length len, into dst, at position dst_pos, an error occurs if out of string bounds
+    $exports.string.string_blit = function(dst, dst_pos, src, src_pos, len) { return $sblit(dst, dst_pos, src, src_pos, len) }
+
+    //int $sfind(src : string, pos : int, pat : string) -> Find the first occurrence of pat in src, starting at position pos, null if not found, an error occurs if pos is out of src bounds
+    $exports.string.string_find = function(src, pos, pat) { return $sfind(src, pos, pat) }
+
+////OUTSIDE ENDREGION: string
+
+////OUTSIDE REGION: object
+$exports.object = $new(null)
+
+    //object $new(object?) -> Copy an object, or create a new empty object if null
+    $exports.object.object_new = function(object) { return $new(object) }
+
+    //any $objget(o : any, f : int) -> Get a field from an object, null if not found or o is not an object
+    $exports.object.object_get = function(o, f) { return $objget(o, f) }
+
+    //any $objset(o : any, f : int, v : any) -> Set a field in an object, return v if o is an object, null otherwise
+    $exports.object.object_set = function(o, f, v) { return $objset(o, f, v) }
+
+    //any $objcall(o : any, f : int, args : array) -> Call a method on an object, return the value or null if o is not an object
+    $exports.object.object_call = function(o, f, args) { return $objcall(o, f, args) }
+
+    //bool $objfield(o : any, f : int) -> Check if a field exists in an object
+    $exports.object.object_field = function(o, f) { return $objfield(o, f) }
+
+    //bool $objremove(o : object, f : int) -> Remove a field from an object, return true on success
+    $exports.object.object_remove = function(o, f) { return $objremove(o, f) }
+
+    //int array $objfields(o : object) -> Get the list of fields in an object
+    $exports.object.object_fields = function(o) { return $objfields(o) }
+
+    //int $hash(string) -> Compute a hash value for a string
+    $exports.object.hash = function(string) { return $hash(string) }
+
+    //string $field(int) -> Get the name of a field from hash value, null if failed
+    $exports.object.field = function(int) { return $field(int) }
+
+    //void $objsetproto(o : object, proto : object?) -> Set the prototype of an object
+    $exports.object.object_setproto = function(o, proto) { return $objsetproto(o, proto) }
+
+    //object? $objgetproto(o : object) -> Get the prototype of an object
+    $exports.object.object_getproto = function(o) { return $objgetproto(o) }
+
+////OUTSIDE ENDREGION: object
+
+////OUTSIDE REGION: function
+$exports.func = $new(null)
+
+    //int $nargs(function) -> Get the number of arguments of a function, -1 if unknown
+    $exports.func.nargs = function(func) { return $nargs(func) }
+
+    //any $call(f : function, this : any, args : array) -> Call a function f with this as context, and args as arguments
+    $exports.func.call = function(f, _this, args) { return $call(f, _this, args) }
+
+    //function $closure(function, any*) -> Create a closure from a function and a list of values
+    $exports.func.closure = function(func, array) { var length = $asize(array); var i = 0; while(i < length) { $closure(func, array[i]); i=i+1; } }
+
+    //any $apply(function, any*) -> Call a function with a list of arguments, return a function asking for more arguments if not enough
+    $exports.func.apply = function(func, array) { var nargs = $nargs(func); var i = 0; while(i < nargs) { func = $apply(func, array[i]); i=i+1; } }
+
+    //function $varargs(f : function:1) -> Create a function taking a variable number of arguments
+    $exports.func.varargs = function(f) { return $varargs(f) }
+
+////OUTSIDE ENDREGION: function
+
+////OUTSIDE REGION: number
+$exports.number = $new(null)
+
+    //int $iadd(any, any) -> Add two values
+    $exports.number.add = function(any, any) { return $iadd(any, any) }
+
+    //int $isub(any, any) -> Subtract two values
+    $exports.number.subtract = function(any, any) { return $isub(any, any) }
+
+    //int $imult(any, any) -> Multiply two values
+    $exports.number.multiply = function(any, any) { return $imult(any, any) }
+
+    //int $idiv(any, any) -> Divide two values
+    $exports.number.divide = function(any, any) { return $idiv(any, any) }
+
+    //bool $isnan(any) -> Check if a value is NaN
+    $exports.number.isnan = function(any) { return $isnan(any) }
+
+    //bool $isinfinite(any) -> Check if a value is infinite
+    $exports.number.isinfinite = function(any) { return $isinfinite(any) }
+
+    //int? $int(any) -> Convert a value to an integer, null if not possible
+    $exports.number.to_int = function(any) { return $int(any) }
+
+    //float? $float(any) -> Convert a value to a float, null if not possible
+    $exports.number.to_float = function(any) { return $float(any) }
+
+////OUTSIDE ENDREGION: number
+
+////OUTSIDE REGION: abstract
+$exports.abstract = $new(null)
+
+    //'kind $getkind('abstract) -> Get the kind of an abstract
+    $exports.abstract.getkind = function(abstract) { return $getkind(abstract) }
+
+    //bool $iskind(any, 'kind) -> Check if a value is of a given kind
+    $exports.abstract.iskind = function(any, kind) { return $iskind(any, kind) }
+
+////OUTSIDE ENDREGION: abstract
+
+////OUTSIDE REGION: hashtable
+$exports.hashtable = $new(null)
+
+    //int $hkey(any) -> Get the hash key of a value
+    $exports.hashtable.key = function(any) { return $hkey(any) }
+
+    //'hash $hnew(s : int) -> Create a hash table of size s
+    $exports.hashtable.new = function(s) { return $hnew(s) }
+
+    //void $hresize('hash, int) -> Resize a hash table
+    $exports.hashtable.resize = function(hash, int) { return $hresize(hash, int) }
+
+    //any $hget('hash, k : any, cmp : function:2?) -> Get a value from a hash table, null if not found, cmp is used to compare keys, or $compare if null
+    $exports.hashtable.get = function(hash, k, cmp) { return $hget(hash, k, cmp) }
+
+    //bool $hmem('hash, k : any, cmp : function:2?) -> Check if a key is in a hash table, cmp is used to compare keys, or $compare if null
+    $exports.hashtable.mem = function(hash, k, cmp) { return $hmem(hash, k, cmp) }
+
+    //bool $hremove('hash, k : any, cmp : function:2?) -> Remove a key from a hash table, return true on success, cmp is used to compare keys, or $compare if null
+    $exports.hashtable.remove = function(hash, k, cmp) { return $hremove(hash, k, cmp) }
+
+    //bool $hset('hash, k : any, v : any, cmp : function:2?) -> Set a value in a hash table, return true on success, cmp is used to compare keys, or $compare if null
+    $exports.hashtable.set = function(hash, k, v, cmp) { return $hset(hash, k, v, cmp) }
+
+    //void $hadd('hash, k : any, v : any) -> Add a value in a hash table, previous binding is masked but not removed
+    $exports.hashtable.add = function(hash, k, v) { return $hadd(hash, k, v) }
+
+    //void $hiter('hash, f : function:2) -> Iterate over a hash table, f is called with each key and value
+    $exports.hashtable.iter = function(hash, f) { return $hiter(hash, f) }
+
+    //int $hcount('hash) -> Get the number of elements in a hash table
+    $exports.hashtable.count = function(hash) { return $hcount(hash) }
+
+    //int $hsize('hash) -> Get the size of a hash table
+    $exports.hashtable.size = function(hash) { return $hsize(hash) }
+
+////OUTSIDE ENDREGION: hashtable
+
+////OUTSIDE REGION: vm
+$exports.vm = $new(null)
+
+    //void $print(any*) -> Print a list of values
+    $exports.vm.print = function(array) { var length = $asize(array); var i = 0; while(i < length) { $print(array[i]); i=i+1; } }
+
+    //any $throw(any) -> Throw an exception
+    $exports.vm.throw = function(any) { return $throw(any) }
+
+    //any $rethrow(any) -> Rethrow an exception in the current exception context
+    $exports.vm.rethrow = function(any) { return $rethrow(any) }
+
+    //bool $istrue(v : any) -> Check if a value is true, not null and not 0
+    $exports.vm.istrue = function(v) { return $istrue(v) }
+
+    //bool $not(any) -> Return the logical negation of a value
+    $exports.vm.not = function(any) { return $not(any) }
+
+    //int $typeof(any) -> Get the type of a value [$tnull = 0 | $tint = 1 | $tfloat = 2 | $tbool = 3 | $tstring = 4 | $tobject = 5 | $tarray = 6 | $tfunction = 7 | $tabstract = 8]
+    $exports.vm.typeof = function(any) { return $typeof(any) }
+
+    //int? $compare(any, any) -> Compare two values, null if not comparable
+    $exports.vm.compare = function(any, any) { return $compare(any, any) }
+
+    //int $pcompare(any, any) -> Physical comparison of two values, same as $compare for integers
+    $exports.vm.pcompare = function(any, any) { return $pcompare(any, any) }
+
+    //array $excstack() -> Get the current exception stack, the stack is composed of the following items: null when it's a C function | a string when it's a module without debug informations | an array of two elements (usually file and line) if debug informations where available
+    $exports.vm.excstack = function() { return $excstack() }
+
+    //array $callstack() -> Get the current call stack, the stack is composed of the following items: null when it's a C function | a string when it's a module without debug informations | an array of two elements (usually file and line) if debug informations where available
+    $exports.vm.callstack = function() { return $callstack() }
+
+    //int $version() -> Get the version of the VM
+    $exports.vm.version = function() { return $version() }
+
+    //void $setresolver(function:2?) -> Set the module resolver, used to load modules
+    $exports.vm.setresolver = function(func) { return $setresolver(func) }
+
+////OUTSIDE ENDREGION: vm
+
+////ENDREGION: neko::builtin
+
+
+//////REGION: std::buffer
+$exports.buffer = $new(null)
+
+//'buffer buffer_new()
+$exports.buffer.buffer_new = $loader.loadprim("std@buffer_new",0)
+
+//void buffer_add('buffer, any)
+$exports.buffer.buffer_add = $loader.loadprim("std@buffer_add",2)
+
+//void buffer_add_char('buffer, c : int)
+$exports.buffer.buffer_add_char = $loader.loadprim("std@buffer_add_char",2)
+
+//void buffer_add_sub('buffer, s : string, p : int, l : int)
+$exports.buffer.buffer_add_sub = $loader.loadprim("std@buffer_add_sub",4)
+
+//string buffer_string('buffer)
+$exports.buffer.buffer_string = $loader.loadprim("std@buffer_string",1)
+
+//void buffer_reset('buffer)
+$exports.buffer.buffer_reset = $loader.loadprim("std@buffer_reset",1)
+
+//int buffer_get_length('buffer) -> Get the length of a buffer
+$exports.buffer.buffer_get_length = $loader.loadprim("std@buffer_get_length",1)
+
+////ENDREGION: std::buffer
+
+
+////REGION std::date
+$exports.date = $new(null)
+
+//'int32 date_now() -> Get the current time in milliseconds
+$exports.date.now = $loader.loadprim("std@date_now",0)
+
+//'int32 date_new(string?) -> Parse a date format, following formats are accepted: [null : return current date and time | YYYY-MM-DD HH:MM:SS : full date and time | YYYY-MM-DD : date only (time will be set to midnight) | HH:MM:SS : this represent an elapsed time. It will be corrected with timezone so you can subtract it from a date.]
+$exports.date.date_new = $loader.loadprim("std@date_new",1)
+
+//string date_format(#int32, fmt : string?) -> Format a date using strftime format, if fmt is null, the default format is used
+$exports.date.date_format = $loader.loadprim("std@date_format",2)
+
+//string date_utc_format(#int32, fmt : string?) -> Format a date using strftime format, if fmt is null, the default format is used
+$exports.date.date_utc_format = $loader.loadprim("std@date_utc_format",2)
+
+//'int32 date_set_hour(#int32, h : int, m : int, s : int) -> Set the hour, minute and second of a date, return the new date
+$exports.date.date_set_hour = $loader.loadprim("std@date_set_hour",4)
+
+//'int32 date_set_day(#int32, y : int, m : int, d : int) -> Set the year, month and day of a date, return the new date
+$exports.date.date_set_day = $loader.loadprim("std@date_set_day",4)
+
+//{ y => int, m => int, d => int} date_get_day(#int32) -> Get the year, month and day of a date
+$exports.date.date_get_day = $loader.loadprim("std@date_get_day",1)
+
+//{ y => int, m => int, d => int} date_get_utc_day(#int32) -> Get the year, month and day of a date in UTC
+$exports.date.date_get_utc_day = $loader.loadprim("std@date_get_utc_day",1)
+
+//{ h => int, m => int, s => int} date_get_hour(#int32) -> Get the hour, minute and second of a date
+$exports.date.date_get_hour = $loader.loadprim("std@date_get_hour",1)
+
+//{ h => int, m => int, s => int} date_get_utc_hour(#int32)
+$exports.date.date_get_utc_hour = $loader.loadprim("std@date_get_utc_hour",1)
+
+//int date_get_tz(object o) -> Get the timezone offset in seconds
+$exports.date.date_get_tz = $loader.loadprim("std@date_get_tz",1)
+
+////ENDREGION: std::date
+
+
+////REGION: std::file
+$exports.file = $new(null)
+
+//'file file_open(f : string, r : string) -> Open a file f, r is a string containing the following characters: r : read | w : write | a : append | + : read/write | b : binary
+$exports.file.file_open = $loader.loadprim("std@file_open",2)
+
+//void file_close('file) -> Close a file
+$exports.file.file_close = $loader.loadprim("std@file_close",1)
+
+//string file_name('file) -> Get the name of a file
+$exports.file.file_name = $loader.loadprim("std@file_name",1)
+
+//int file_write('file, s : string, p : int, l : int) -> Write a string s to a file, p is the position in the string, l is the length of the string 
+$exports.file.file_write = $loader.loadprim("std@file_write",4)
+
+//int file_read('file, s : string, p : int, l : int) -> Read a string s from a file, p is the position in the string, l is the length of the string
+$exports.file.file_read = $loader.loadprim("std@file_read",4)
+
+//void file_write_char('file, c : int) -> Write a character to a file, error if c outside of range 0-255
+$exports.file.file_write_char = $loader.loadprim("std@file_write_char",2)
+
+//int file_read_char('file) -> Read a character from a file, return -1 if end of file
+$exports.file.file_read_char = $loader.loadprim("std@file_read_char",1)
+
+//void file_seek('file, pos : int, mode : int) -> Seek to a position in a file, mode is one of the following: 0 : from start | 1 : from current position | 2 : from end
+$exports.file.file_seek = $loader.loadprim("std@file_seek",3)
+
+//int file_tell('file) -> Get the current position in a file
+$exports.file.file_tell = $loader.loadprim("std@file_tell",1)
+
+//bool file_eof('file) -> Return true if end of file
+$exports.file.file_eof = $loader.loadprim("std@file_eof",1)
+
+//void file_flush('file) -> Flush the file
+$exports.file.file_flush = $loader.loadprim("std@file_flush",1)
+
+//string file_contents(f : string) -> Read the contents of a file
+$exports.file.file_contents = $loader.loadprim("std@file_contents",1)
+
+//'file file_stdin() -> Get the standard input file
+$exports.file.file_stdin = $loader.loadprim("std@file_stdin",0)
+
+//'file file_stdout() -> Get the standard output file
+$exports.file.file_stdout = $loader.loadprim("std@file_stdout",0)
+
+//'file file_stderr() -> Get the standard error file
+$exports.file.file_stderr = $loader.loadprim("std@file_stderr",0)
+
+////ENDREGION: std::file
+
+
+////REGION: std:int32
+$exports.int32 = $new(null)
+
+//'int32 int32_new(#int32|float) -> Create a new int32 from a float or int32
+$exports.int32.int32_new = $loader.loadprim("std@int32_new",1)
+
+//int int32_to_int(#int32) -> Return the int value if it can be represented using 31 bits. Error either
+$exports.int32.int32_to_int = $loader.loadprim("std@int32_to_int",1)
+
+//float int32_to_float(#int32) -> Return the float value
+$exports.int32.int32_to_float = $loader.loadprim("std@int32_to_float",1)
+
+//int int32_compare(#int32, #int32) -> Compare two int32
+$exports.int32.int32_compare = $loader.loadprim("std@int32_compare",2)
+
+//#int32 int32_ushr(#int32, #int32) -> Unsigned shift right
+$exports.int32.int32_ushr = $loader.loadprim("std@int32_ushr",2)
+
+//#int32 int32_add(#int32, #int32) -> Add two int32
+$exports.int32.int32_add = $loader.loadprim("std@int32_add",2)
+
+//#int32 int32_sub(#int32, #int32) -> Subtract two int32
+$exports.int32.int32_sub = $loader.loadprim("std@int32_sub",2)
+
+//#int32 int32_mul(#int32, #int32) -> Multiply two int32
+$exports.int32.int32_mul = $loader.loadprim("std@int32_mul",2)
+
+//#int32 int32_div(#int32, #int32) -> Divide two int32
+$exports.int32.int32_div = $loader.loadprim("std@int32_div",2)
+
+//#int32 int32_shl(#int32, #int32) -> Shift left
+$exports.int32.int32_shl = $loader.loadprim("std@int32_shl",2)
+
+//#int32 int32_shr(#int32, #int32) -> Shift right
+$exports.int32.int32_shr = $loader.loadprim("std@int32_shr",2)
+
+//#int32 int32_mod(#int32, #int32) -> Modulo, error if second argument is zero
+$exports.int32.int32_mod = $loader.loadprim("std@int32_mod",2)
+
+//#int32 int32_neg(#int32) -> Negate
+$exports.int32.int32_neg = $loader.loadprim("std@int32_neg",1)
+
+//#int32 int32_complement(#int32) -> Complement
+$exports.int32.int32_complement = $loader.loadprim("std@int32_complement",1)
+
+//#int32 int32_or(#int32, #int32) -> Bitwise or
+$exports.int32.int32_or = $loader.loadprim("std@int32_or",2)
+
+//#int32 int32_and(#int32, #int32) -> Bitwise and
+$exports.int32.int32_and = $loader.loadprim("std@int32_and",2)
+
+//#int32 int32_xor(#int32, #int32) -> Bitwise xor
+$exports.int32.int32_xor = $loader.loadprim("std@int32_xor",2)
+
+//#int32 int32_address(any) -> Get the address of a value, the address should not be considered constant. It is not unique either unless you are sure you are running on a 32-bit platform.
+$exports.int32.int32_address = $loader.loadprim("std@int32_address",1)
+
+////ENDREGION: std:int32
+
+
+////REGION: std:math
+$exports.math = $new(null)
+
+//float math_atan2(number, number) -> Arc tangent of y/x
+$exports.math.math_atan2 = $loader.loadprim("std@math_atan2",2)
+
+//float math_pow(number, number) -> x to the power of y
+$exports.math.math_pow = $loader.loadprim("std@math_pow",2)
+
+//number math_abs(number) -> Absolute value
+$exports.math.math_abs = $loader.loadprim("std@math_abs",1)
+
+//int math_ceil(number) -> Round up
+$exports.math.math_ceil = $loader.loadprim("std@math_ceil",1)
+
+//int math_floor(number) -> Round down
+$exports.math.math_floor = $loader.loadprim("std@math_floor",1)
+
+//int math_round(number) -> Round to nearest integer
+$exports.math.math_round = $loader.loadprim("std@math_round",1)
+
+//float math_pi() -> Pi
+$exports.math.math_pi = $loader.loadprim("std@math_pi",0)
+
+//float math_sqrt(number) -> Square root
+$exports.math.math_sqrt = $loader.loadprim("std@math_sqrt",1)
+
+//float math_atan(number) -> Arc tangent
+$exports.math.math_atan = $loader.loadprim("std@math_atan",1)
+
+//float math_cos(number) -> Cosine
+$exports.math.math_cos = $loader.loadprim("std@math_cos",1)
+
+//float math_sin(number) -> Sine
+$exports.math.math_sin = $loader.loadprim("std@math_sin",1)
+
+//float math_tan(number) -> Tangent
+$exports.math.math_tan = $loader.loadprim("std@math_tan",1)
+
+//float math_log(number) -> Natural logarithm
+$exports.math.math_log = $loader.loadprim("std@math_log",1)
+
+//float math_exp(number) -> Exponential
+$exports.math.math_exp = $loader.loadprim("std@math_exp",1)
+
+//float math_acos(number) -> Arc cosine
+$exports.math.math_acos = $loader.loadprim("std@math_acos",1)
+
+//float math_asin(number) -> Arc sine
+$exports.math.math_asin = $loader.loadprim("std@math_asin",1)
+
+////ENDREGION: std:math
+
+
+////REGION: std:md5
+$exports.md5 = $new(null)
+
+//string make_md5(any) -> Make a md5 hash of a value
+$exports.md5.make_md5 = $loader.loadprim("std@make_md5",1)
+
+//string make_sha1( value s, value p, value l ) -> Make a sha1 hash of a value
+$exports.md5.make_sha1 = $loader.loadprim("std@make_sha1",3)
+
+////ENDREGION: std:md5
+
+
+////REGION: std:memory
+$exports.memory = $new(null)
+
+//int mem_size(any) -> Calculate the quite precise amount of VM memory reachable from this value
+$exports.memory.mem_size = $loader.loadprim("std@mem_size",1)
+
+//int mem_local_size(any, value a ) -> Calculate the quite precise amount of VM memory reachable from this value, but only if it is reachable from the given address
+$exports.memory.mem_local_size = $loader.loadprim("std@mem_local_size",2)
+
+////ENDREGION: std:memory
+
+
+////REGION std:module
+$exports.module = $new(null)
+
+//'module module_read(fread : ((buf : string -> pos : int -> len : int -> int)), loader : object) -> Read a module using the specified read function and the specified loader.
+$exports.module.module_read = $loader.loadprim("std@module_read",2)
+
+//'module module_read_path(string list, name : string, loader : object) -> Read a module using the specified search path.
+$exports.module.module_read_path = $loader.loadprim("std@module_read_path",3)
+
+//'module module_read_string( value str, value loader ) -> Read a module from a string.
+$exports.module.module_read_string = $loader.loadprim("std@module_read_string",2)
+
+//'any module_exec('module) -> Execute the module, return the calculated value
+$exports.module.module_exec = $loader.loadprim("std@module_exec",1)
+
+//'string module_name('module) -> Return the module name
+$exports.module.module_name = $loader.loadprim("std@module_name",1)
+
+//'module module_set_name( value mv, value str ) -> Set the module name
+$exports.module.module_set_name = $loader.loadprim("std@module_set_name",2)
+
+//'object module_exports('module) -> Return the module export table
+$exports.module.module_exports = $loader.loadprim("std@module_exports",1)
+
+//'object module_loader('module) -> Return the module loader
+$exports.module.module_loader = $loader.loadprim("std@module_loader",1)
+
+//'int module_nglobals('module) -> Return the number of globals for this module
+$exports.module.module_nglobals = $loader.loadprim("std@module_nglobals",1)
+
+//'any module_global_get('module, n : int) -> Get the nth global
+$exports.module.module_global_get = $loader.loadprim("std@module_global_get",2)
+
+//'void module_global_set('module, n : int, any) -> Set the nth global
+$exports.module.module_global_set = $loader.loadprim("std@module_global_set",3)
+
+//'int module_code_size('module) -> return the codesize of the module
+$exports.module.module_code_size = $loader.loadprim("std@module_code_size",1)
+
+////ENDREGION: std:module
+
+
+////REGION: std:random
+$exports.random = $new(null)
+
+//'random random_new() -> Create a new random generator
+$exports.random.random_new = $loader.loadprim("std@random_new",0)
+
+//void random_set_seed('random, int) -> Set the seed of a random generator
+$exports.random.random_set_seed = $loader.loadprim("std@random_set_seed",2)
+
+//int random_int('random, max : int) -> Generate a random integer
+$exports.random.random_int = $loader.loadprim("std@random_int",2)
+
+//float random_float('random) -> Generate a random float
+$exports.random.random_float = $loader.loadprim("std@random_float",1)
+
+////ENDREGION: std:random
+
+
+////REGION std:serialize
+$exports.serialize = $new(null)
+
+//string serialize(any) -> Serialize a value
+$exports.serialize.serialize = $loader.loadprim("std@serialize",1)
+
+//any unserialize(string, #loader) -> Unserialize a value
+$exports.serialize.unserialize = $loader.loadprim("std@unserialize",2)
+
+////ENDREGION: std:serialize
+
+
+////REGION: std:socket
+$exports.socket = $new(null)
+
+//void socket_init() -> Initialize the socket API. Must be called at least once per process before using any socket or host function.
+$exports.socket.socket_init = $loader.loadprim("std@socket_init",0)
+
+//socket socket_new(udp : bool) -> Create a new socket, TCP or UDP
+$exports.socket.socket_new = $loader.loadprim("std@socket_new",1)
+
+//void socket_close('socket) -> Close a socket. Any subsequent operation on this socket will fail
+$exports.socket.socket_close = $loader.loadprim("std@socket_close",1)
+
+//void socket_send_char('socket, int) -> Send a character over a connected socket. Must be in the range 0..255
+$exports.socket.socket_send_char = $loader.loadprim("std@socket_send_char",2)
+
+//int socket_send('socket, buf : string, pos : int, len : int) -> Send up to len bytes from buf starting at pos over a connected socket. Return the number of bytes sent.
+$exports.socket.socket_send = $loader.loadprim("std@socket_send",4)
+
+//int socket_recv('socket, buf : string, pos : int, len : int) -> Read up to len bytes from buf starting at pos from a connected socket. Return the number of bytes readed.
+$exports.socket.socket_recv = $loader.loadprim("std@socket_recv",4)
+
+//int socket_recv_char('socket) -> Read a single char from a connected socket.
+$exports.socket.socket_recv_char = $loader.loadprim("std@socket_recv_char",1)
+
+//void socket_write('socket, string) -> Send the whole content of a string over a connected socket.
+$exports.socket.socket_write = $loader.loadprim("std@socket_write",2)
+
+//string socket_read('socket) -> Read the whole content of a the data available from a socket until the connection close. If the socket hasn't been close by the other side, the function might block.
+$exports.socket.socket_read = $loader.loadprim("std@socket_read",1)
+
+//'int32 host_resolve(string) -> Resolve the given host string into an IP address.
+$exports.socket.host_resolve = $loader.loadprim("std@host_resolve",1)
+
+//string host_to_string('int32) -> Return a string representation of the IP address.
+$exports.socket.host_to_string = $loader.loadprim("std@host_to_string",1)
+
+//string host_reverse('int32) -> Reverse the DNS of the given IP address.
+$exports.socket.host_reverse = $loader.loadprim("std@host_reverse",1)
+
+//string host_local() -> Return the local host name.
+$exports.socket.host_local = $loader.loadprim("std@host_local",0)
+
+//void socket_connect('socket, host : 'int32, port : int) -> Connect the socket the given host and port
+$exports.socket.socket_connect = $loader.loadprim("std@socket_connect",3)
+
+//void socket_listen('socket, int) -> Listen for a number of connections
+$exports.socket.socket_listen = $loader.loadprim("std@socket_listen",2)
+
+//'socket array array socket_select(read : 'socket array, write : 'socket array, others : 'socket array, timeout : number?) -> Perform the select operation. Timeout is in seconds or null if infinite
+$exports.socket.socket_select = $loader.loadprim("std@socket_select",4)
+
+//void socket_bind('socket, host : 'int32, port : int) -> Bind the socket for server usage on the given host and port
+$exports.socket.socket_bind = $loader.loadprim("std@socket_bind",3)
+
+//'socket socket_accept('socket) -> Accept an incoming connection request
+$exports.socket.socket_accept = $loader.loadprim("std@socket_accept",1)
+
+//#address socket_peer('socket) -> Return the socket connected peer address composed of an (host,port) array
+$exports.socket.socket_peer = $loader.loadprim("std@socket_peer",1)
+
+//#address socket_host('socket) -> Return the socket local address composed of an (host,port) array
+$exports.socket.socket_host = $loader.loadprim("std@socket_host",1)
+
+//void socket_set_timeout('socket, timout : number?) -> Set the socket send and recv timeout in seconds to the given value (or null for blocking)
+$exports.socket.socket_set_timeout = $loader.loadprim("std@socket_set_timeout",2)
+
+//void socket_shutdown('socket, read : bool, write : bool) -> Prevent the socket from further reading or writing or both.
+$exports.socket.socket_shutdown = $loader.loadprim("std@socket_shutdown",3)
+
+//void socket_set_blocking('socket, bool) -> Turn on/off the socket blocking mode.
+$exports.socket.socket_set_blocking = $loader.loadprim("std@socket_set_blocking",2)
+
+//'poll socket_poll_alloc(int) -> Allocate memory to perform polling on a given number of sockets
+$exports.socket.socket_poll_alloc = $loader.loadprim("std@socket_poll_alloc",1)
+
+//'socket array socket_poll('socket array, 'pool, timeout : float) -> Perform a polling for data available over a given set of sockets. This is similar to socket_select except that socket_select is limited to a given number of simultaneous sockets to check.
+$exports.socket.socket_poll = $loader.loadprim("std@socket_poll",3)
+
+//void socket_set_fast_send( value s, value f ) -> Set the fast send flag on a socket. If the flag is set, the socket will try to send as much data as possible in a single call to the operating system. This is useful for sending large amount of data over a socket.
+$exports.socket.socket_set_fast_send = $loader.loadprim("std@socket_set_fast_send",2)
+
+//void socket_set_broadcast( value s, value f ) -> Set the broadcast flag on a socket. If the flag is set, the socket will be able to send broadcast messages.
+$exports.socket.socket_set_broadcast = $loader.loadprim("std@socket_set_broadcast",2)
+
+//int socket_send_to( value o, value data, value pos, value len, value vaddr ) -> Send data to a given address. The address is a (host,port) array.
+$exports.socket.socket_send_to = $loader.loadprim("std@socket_send_to",5)
+
+//int socket_recv_from( value o, value data, value pos, value len, value addr ) -> Receive data from a given address. The address is a (host,port) array.
+$exports.socket.socket_recv_from = $loader.loadprim("std@socket_recv_from",5)
+
+//void socket_set_keepalive( value o, value b, value time, value interval ) -> Set the keepalive flag on a socket. If the flag is set, the socket will send keepalive messages to the other side if no data has been sent for a given amount of time. The time is in seconds.
+$exports.socket.socket_set_keepalive = $loader.loadprim("std@socket_set_keepalive",4)
+
+//abstract epoll socket_epoll_alloc(value maxevents) -> Allocate memory to perform polling on a given number of sockets
+$exports.socket.socket_epoll_alloc = $loader.loadprim("std@socket_epoll_alloc",1)
+
+//int socket_epoll_register(value e, value s, value events) -> Register a socket in an epoll structure. The events are a combination of the following flags: EPOLLIN, EPOLLOUT, EPOLLPRI, EPOLLERR, EPOLLHUP, EPOLLET, EPOLLONESHOT.
+$exports.socket.socket_epoll_register = $loader.loadprim("std@socket_epoll_register",3)
+
+//int socket_epoll_unregister(value e, value s) -> Unregister a socket from an epoll structure.
+$exports.socket.socket_epoll_unregister = $loader.loadprim("std@socket_epoll_unregister",2)
+
+//object socket_epoll_wait(value e, value timeout) -> Wait for events on a given epoll structure. The timeout is in seconds.
+$exports.socket.socket_epoll_wait = $loader.loadprim("std@socket_epoll_wait",2)
+
+//array socket_poll_prepare( value pdata, value rsocks, value wsocks ) -> Prepare a polling structure for a given set of sockets. The pdata parameter is a pointer to a memory area allocated with socket_poll_alloc.
+$exports.socket.socket_poll_prepare = $loader.loadprim("std@socket_poll_prepare",3)
+
+//void socket_poll_events( value pdata, value timeout ) -> Perform a polling for data available over a given set of sockets. This is similar to socket_select except that socket_select is limited to a given number of simultaneous sockets to check.
+$exports.socket.socket_poll_events = $loader.loadprim("std@socket_poll_events",2)
+
+////ENDREGION: std:socket
+
+
+////REGION std:string
+$exports.string = $new(null)
+
+//string list string_split(s : string, sep : string) -> Split a string into a list of strings using the given separator
+$exports.string.string_split = $loader.loadprim("std@string_split",2)
+
+//string sprintf(fmt : string, params : (any | array)) -> Format a string using the given format string and parameters, The following formats are accepted (with corresponding types): [ %s : string | %d %x %X : int | %c : int in the 0..255 range | %b : bool | %f : float ]
+$exports.string.sprintf = $loader.loadprim("std@sprintf",2)
+
+//string url_decode(string) -> Decode a string encoded using the url_encode function
+$exports.string.url_decode = $loader.loadprim("std@url_decode",1)
+
+//string url_encode(string) -> Encode a string using the url encoding scheme
+$exports.string.url_encode = $loader.loadprim("std@url_encode",1)
+
+//string base_encode(s : string, base : string) -> Encode a string using the given base, The base length must be a power of 2
+$exports.string.base_encode = $loader.loadprim("std@base_encode",2)
+
+//string base_decode(s : string, base : string) -> Decode a string using the given base, The base length must be a power of 2
+$exports.string.base_decode = $loader.loadprim("std@base_decode",2)
+
+////ENDREGION: std:string
+
+
+////REGION: std:system
+$exports.system = $new(null)
+
+//string? get_env(string) -> Get the value of an environment variable
+$exports.system.get_env = $loader.loadprim("std@get_env",1)
+
+//void put_env(var : string, val : string) -> Set the value of an environment variable
+$exports.system.put_env = $loader.loadprim("std@put_env",2)
+
+//void sys_sleep(number) -> Sleep for a given number of seconds
+$exports.system.sys_sleep = $loader.loadprim("std@sys_sleep",1)
+
+//bool set_time_locale(string) -> Set the locale for LC_TIME, returns true on success
+$exports.system.set_time_locale = $loader.loadprim("std@set_time_locale",1)
+
+//string get_cwd() -> Get the current working directory
+$exports.system.get_cwd = $loader.loadprim("std@get_cwd",0)
+
+//void set_cwd(string) -> Set the current working directory
+$exports.system.set_cwd = $loader.loadprim("std@set_cwd",1)
+
+//string sys_string() -> Get a string representation of the system, possible values are: [ Windows | Linux | Mac | BSD ]
+$exports.system.sys_string = $loader.loadprim("std@sys_string",0)
+
+//bool sys_is64() -> Check if the system is 64 bits
+$exports.system.sys_is64 = $loader.loadprim("std@sys_is64",0)
+
+//int sys_command(string) -> Execute a system command and return the exit code
+$exports.system.sys_command = $loader.loadprim("std@sys_command",1)
+
+//void sys_exit(int) -> Exit the program with the given exit code
+$exports.system.sys_exit = $loader.loadprim("std@sys_exit",1)
+
+//bool sys_exists(string) -> Check if a file or directory exists
+$exports.system.sys_exists = $loader.loadprim("std@sys_exists",1)
+
+//bool file_exists(string) -> Deprecated, use sys_exists instead
+$exports.system.file_exists = $loader.loadprim("std@file_exists",1)
+
+//void file_delete(string) -> Delete a file, exception on error
+$exports.system.file_delete = $loader.loadprim("std@file_delete",1)
+
+//void sys_rename(from : string, to : string) -> Rename a file or directory, exception on error
+$exports.system.sys_rename = $loader.loadprim("std@sys_rename",2)
+
+//{ gid => int, uid => int, atime => 'int32, mtime => 'int32, ctime => 'int32, dev => int, ino => int, nlink => int, rdev => int, size => int, mode => int } sys_stat(string) -> Get the stat of a file or directory
+$exports.system.sys_stat = $loader.loadprim("std@sys_stat",1)
+
+//string sys_file_type(string) -> Get the type of a file or directory, possible values are: [ file | dir | symlink | sock | char | block | fifo ]
+$exports.system.sys_file_type = $loader.loadprim("std@sys_file_type",1)
+
+//void sys_create_dir(string, mode : int) -> Create a directory with specified rights, exception on error
+$exports.system.sys_create_dir = $loader.loadprim("std@sys_create_dir",2)
+
+//void sys_remove_dir(string) -> Remove a directory, exception on error
+$exports.system.sys_remove_dir = $loader.loadprim("std@sys_remove_dir",1)
+
+//float sys_time() -> Get the current time in seconds since the epoch
+$exports.system.sys_time = $loader.loadprim("std@sys_time",0)
+
+//float sys_cpu_time() -> Get the current cpu time in seconds since the epoch
+$exports.system.sys_cpu_time = $loader.loadprim("std@sys_cpu_time",0)
+
+//string list sys_read_dir(string) -> Read a directory and return a list of files and directories
+$exports.system.sys_read_dir = $loader.loadprim("std@sys_read_dir",1)
+
+//string file_full_path(string) -> Get the full path of a file or directory, the file or directory must exist
+$exports.system.file_full_path = $loader.loadprim("std@file_full_path",1)
+
+//string sys_exe_path() -> Get the path of the executable
+$exports.system.sys_exe_path = $loader.loadprim("std@sys_exe_path",0)
+
+//#list sys_env() -> Get a list of all environment variables
+$exports.system.sys_env = $loader.loadprim("std@sys_env",0)
+
+//int sys_getch(bool) -> Get a character from the console, if the argument is true, the character is not echoed
+$exports.system.sys_getch = $loader.loadprim("std@sys_getch",1)
+
+//int sys_get_pid() -> Get the process id of the current process
+$exports.system.sys_get_pid = $loader.loadprim("std@sys_get_pid",0)
+
+//int sys_thread_cpu_time -> Get the cpu time of the current thread in seconds since the epoch, NOTE: Due to the method not being implemented on some platforms, this function will always return 0
+$exports.system.sys_thread_cpu_time = function() { return 0; }
+
+////ENDREGION: std:system
+
+
+////REGION: std:utf8
+$exports.utf8 = $new(null)
+
+//'ubuf utf8_buf_alloc(size : int) -> Allocate a buffer for utf8 data
+$exports.utf8.utf8_buf_alloc = $loader.loadprim("std@utf8_buf_alloc",1)
+
+//void utf8_buf_add('buf, int) -> Add a valid UTF8 char (0 - 0x10FFFF) to the buffer
+$exports.utf8.utf8_buf_add = $loader.loadprim("std@utf8_buf_add",2)
+
+//string utf8_buf_content('buf) -> Return the current content of the buffer. This is not a copy of the buffer but the shared content. Retreiving content and then continuing to add chars is possible but not very efficient.
+$exports.utf8.utf8_buf_content = $loader.loadprim("std@utf8_buf_content",1)
+
+//int utf8_buf_length('buf) -> Return the number of UTF8 chars stored in the buffer
+$exports.utf8.utf8_buf_length = $loader.loadprim("std@utf8_buf_length",1)
+
+//int utf8_buf_size('buf) -> Return the current size in bytes of the buffer
+$exports.utf8.utf8_buf_size = $loader.loadprim("std@utf8_buf_size",1)
+
+//bool utf8_validate(string) -> Validate if a string is encoded using the UTF8 format
+$exports.utf8.utf8_validate = $loader.loadprim("std@utf8_validate",1)
+
+//int utf8_length(string) -> Returns the number of UTF8 chars in the string.
+$exports.utf8.utf8_length = $loader.loadprim("std@utf8_length",1)
+
+//string utf8_sub(string, pos : int, len : int) -> Returns a part of an UTF8 string.
+$exports.utf8.utf8_sub = $loader.loadprim("std@utf8_sub",3)
+
+//int utf8_get(string, n : int) -> Returns the nth char in an UTF8 string. This might be inefficient if n is big.
+$exports.utf8.utf8_get = $loader.loadprim("std@utf8_get",2)
+
+//void utf8_iter(string, f : ((int -> void))) -> Call f with each of UTF8 char of the string.
+$exports.utf8.utf8_iter = $loader.loadprim("std@utf8_iter",2)
+
+//int utf8_compare(s1 : string, s2 : string) -> Compare two UTF8 strings according to UTF8 char codes.
+$exports.utf8.utf8_compare = $loader.loadprim("std@utf8_compare",2)
+
+////ENDREGION: std:utf8
+
+
+////REGION: std:xml
+$exports.xml = $new(null)
+
+//void parse_xml(xml : string, events : object) -> Parse an XML string and call the events object methods. Methods called: [ void xml( name : string, attribs : object) when an XML node is found void done() when an XML node is closed | void pcdata(string) when PCData chars found | void cdata(string) when a CData session is found | void comment(string) when some comment or special header is found ]
+$exports.xml.parse_xml = $loader.loadprim("std@parse_xml",2)
+
+////ENDREGION: std:xml
+
+
+////REGION std:thread
+$exports.thread = $new(null)
+
+//'thread thread_create(f : function:1, p : any) -> Create a new thread, the function f will be called with the parameter p
+$exports.thread.thread_create = $loader.loadprim("std@thread_create",2)
+
+//'thread thread_current()
+$exports.thread.thread_current = $loader.loadprim("std@thread_current",0)
+
+//void thread_send('thread, msg : any) -> Send a message to a thread
+$exports.thread.thread_send = $loader.loadprim("std@thread_send",2)
+
+//any thread_read_message(block : bool) -> Read a message sent to the current thread, if block is true, the function will block until a message is received, otherwise it will return null if no message is available
+$exports.thread.thread_read_message = $loader.loadprim("std@thread_read_message",1)
+
+//'lock lock_create() -> Create a new lock which is initially locked
+$exports.thread.lock_create = $loader.loadprim("std@lock_create",0)
+
+//void lock_release('lock) -> Release a lock, The thread does not need to own the lock to be able to release it. If a lock is released several times, it can be acquired as many times
+$exports.thread.lock_release = $loader.loadprim("std@lock_release",1)
+
+//bool lock_wait('lock, timeout : number?) -> Wait for a lock to be released and acquire it, Waits for a lock to be released and acquire it. If timeout (in seconds) is not null and expires then the returned value is false
+$exports.thread.lock_wait = $loader.loadprim("std@lock_wait",2)
+
+//'tls tls_create() -> Creates thread local storage. This is placeholder that can store a value that will be different depending on the local thread. You must set the tls value to null before exiting the thread or the memory will never be collected.
+$exports.thread.tls_create = $loader.loadprim("std@tls_create",0)
+
+//'any tls_get('tls) -> Returns the value set by tls_set for the local thread.
+$exports.thread.tls_get = $loader.loadprim("std@tls_get",1)
+
+//'void tls_set('tls, any) -> Set the value of the TLS for the local thread.
+$exports.thread.tls_set = $loader.loadprim("std@tls_set",2)
+
+//'mutex mutex_create() -> Creates a mutex, which can be used to acquire a temporary lock to access some ressource. The main difference with a lock is that a mutex must always be released by the owner thread.
+$exports.thread.mutex_create = $loader.loadprim("std@mutex_create",0)
+
+//'void mutex_acquire('mutex) -> The current thread acquire the mutex or wait if not available. The same thread can acquire several times the same mutex but must release it as many times it has been acquired.
+$exports.thread.mutex_acquire = $loader.loadprim("std@mutex_acquire",1)
+
+//'bool mutex_try('mutex) -> Try to acquire the mutex, returns true if acquire or false if it's already locked by another thread.
+$exports.thread.mutex_try = $loader.loadprim("std@mutex_try",1)
+
+//'void mutex_release('mutex) -> Release a mutex that has been acquired by the current thread. The behavior is undefined if the current thread does not own the mutex.
+$exports.thread.mutex_release = $loader.loadprim("std@mutex_release",1)
+
+//'deque deque_create() -> create a message queue for multithread access
+$exports.thread.deque_create = $loader.loadprim("std@deque_create",0)
+
+//'void deque_add('deque, any) -> add a message at the end of the queue
+$exports.thread.deque_add = $loader.loadprim("std@deque_add",2)
+
+//'void deque_push('deque, any) -> add a message at the head of the queue
+$exports.thread.deque_push = $loader.loadprim("std@deque_push",2)
+
+//'any? deque_pop('deque, bool) -> pop a message from the queue head. Either block until a message is available or return immedialtly with null.
+$exports.thread.deque_pop = $loader.loadprim("std@deque_pop",2)
+
+//object thread_stack( value vt ) -> Returns the stack of the current thread. The value vt is undocumented.
+$exports.thread.thread_stack = $loader.loadprim("std@thread_stack",1)
+
+////ENDREGION: std:thread
+
+
+////REGION: ui
+$exports.ui = $new(null)
+
+//bool ui_is_main() -> Tells if the current thread is the main loop thread or not. The main loop thread is the one in which the first "ui" library primitive has been loaded.
+$exports.ui.is_main = $loader.loadprim("ui@ui_is_main",0)
+
+//void ui_loop() -> Starts the native UI event loop. This method can only be called from the main thread.
+$exports.ui.loop = $loader.loadprim("ui@ui_loop",0)
+
+//void ui_stop_loop() -> Stop the native UI event loop. This method can only be called from the main thread.
+$exports.ui.stop_loop = $loader.loadprim("ui@ui_stop_loop",0)
+
+//void ui_sync(callb : ((void -> void))) -> Queue a method call callb to be executed by the main thread while running the UI event loop. This can be used to perform UI updates in the UI thread using results processed by another thread.
+$exports.ui.sync = $loader.loadprim("ui@ui_sync",1)
+
+////ENDREGION: ui
+
+
+////REGION: std:process
+$exports.process = $new(null)
+
+//'process process_run(cmd : string, args : string array) -> Start a process using a command and the specified arguments.
+$exports.process.run = $loader.loadprim("std@process_run",2)
+
+//'int process_stdout_read('process, buf : string, pos : int, len : int) -> Read up to len bytes in buf starting at pos from the process stdout. Returns the number of bytes readed this way. Raise an exception if this process stdout is closed and no more data is available for reading.
+$exports.process.stdout_read = $loader.loadprim("std@process_stdout_read",4)
+
+//'int process_stderr_read('process, buf : string, pos : int, len : int) -> Read up to len bytes in buf starting at pos from the process stderr. Returns the number of bytes readed this way. Raise an exception if this process stderr is closed and no more data is available for reading.
+$exports.process.stderr_read = $loader.loadprim("std@process_stderr_read",4)
+
+//'int process_stdin_write('process, buf : string, pos : int, len : int) -> Write up to len bytes from buf starting at pos to the process stdin. Returns the number of bytes writen this way. Raise an exception if this process stdin is closed.
+$exports.process.stdin_write = $loader.loadprim("std@process_stdin_write",4)
+
+//'void process_stdin_close('process) -> Close the process standard input.
+$exports.process.stdin_close = $loader.loadprim("std@process_stdin_close",1)
+
+//'int process_exit('process) -> Wait until the process terminate, then returns its exit code.
+$exports.process.exit = $loader.loadprim("std@process_exit",1)
+
+//'int process_pid('process) -> Returns the process id.
+$exports.process.pid = $loader.loadprim("std@process_pid",1)
+
+//'void process_close('process) -> Close the process I/O.
+$exports.process.close = $loader.loadprim("std@process_close",1)
+
+//'void process_kill('process) -> Kill the process.
+$exports.process.kill = $loader.loadprim("std@process_kill",1)
+
+////ENDREGION: std:process
+
+
+////REGION std:misc
+$exports.misc = $new(null)
+
+//string float_bytes(number, bigendian : bool) -> Returns the 4 bytes representation of the number as an IEEE 32-bit float
+$exports.misc.float_bytes = $loader.loadprim("std@float_bytes",2)
+
+//string double_bytes(number, bigendian : bool) -> Returns the 8 bytes representation of the number as an IEEE 64-bit float
+$exports.misc.double_bytes = $loader.loadprim("std@double_bytes",2)
+
+//float float_of_bytes(string, bigendian : bool) -> Returns a float from a 4 bytes IEEE 32-bit representation
+$exports.misc.float_of_bytes = $loader.loadprim("std@float_of_bytes",2)
+
+//float double_of_bytes(string, bigendian : bool) -> Returns a float from a 8 bytes IEEE 64-bit representation
+$exports.misc.double_of_bytes = $loader.loadprim("std@double_of_bytes",2)
+
+//void run_gc(major : bool) -> Run the Neko garbage collector
+$exports.misc.run_gc = $loader.loadprim("std@run_gc",1)
+
+//{ heap => int, free => int} gc_stats() -> Return the size of the GC heap and the among of free space, in bytes
+$exports.misc.gc_stats = $loader.loadprim("std@gc_stats",0)
+
+//void enable_jit(bool) -> Enable or disable the JIT.
+$exports.misc.enable_jit = $loader.loadprim("std@enable_jit",1)
+
+//void test() -> The test function, to check that library is reachable and correctly linked
+$exports.misc.test = $loader.loadprim("std@test",0)
+
+//void print_redirect(function:1?) -> Set a redirection function for all printed values. Setting it to null will cancel the redirection and restore previous printer.
+$exports.misc.print_redirect = $loader.loadprim("std@print_redirect",1)
+
+//void set_trusted(bool) -> Change the trusted mode of the VM. This can optimize some operations such as module loading by turning off some checks.
+$exports.misc.set_trusted = $loader.loadprim("std@set_trusted",1)
+
+//bool same_closure(any, any) -> Compare two functions by checking that they refer to the same implementation and that their environments contains physically equal values.
+$exports.misc.same_closure = $loader.loadprim("std@same_closure",2)
+
+//void merge_sort( value arr, value len, value cmp ) -> Sort the array arr of length len using the comparison function cmp. The comparison function cmp must return a negative value if the first argument is less than the second, a positive value if the first argument is greater than the second and 0 if they are equal.
+$exports.misc.merge_sort = $loader.loadprim("std@merge_sort",3)
+
+////ENDREGION std:misc
+
+
+////REGION regexp
+$exports.regexp = $new(null)
+
+//'regexp regexp_new_options(reg : string, options : string) -> Build a new regexpr with the following options: [ i : case insensitive matching | s : . match anything including newlines | m : treat the input as a multiline string | u : run in utf8 mode | g : turn off greedy behavior ]
+$exports.regexp.new_options = $loader.loadprim("regexp@regexp_new_options",2)
+
+//'regexp regexp_new(string) -> Build a new regexp
+$exports.regexp.new = $loader.loadprim("regexp@regexp_new",1)
+
+//'bool regexp_match('regexp, string, pos : int, len : int) -> Match len chars of a string starting at pos using the regexp. Return true if match found
+$exports.regexp.match = $loader.loadprim("regexp@regexp_match",4)
+
+//'string regexp_replace('regexp, from : string, by : string) -> Perform a replacement using a regexp
+$exports.regexp.replace = $loader.loadprim("regexp@regexp_replace",3)
+
+//'string regexp_replace_all('regexp, from : string, by : string) -> Perform a replacement of all matched substrings using a regexp
+$exports.regexp.replace_all = $loader.loadprim("regexp@regexp_replace_all",3)
+
+//'string regexp_replace_fun('regexp, from : string, f : (('regexp -> any))) -> Perform a replacement of all matched substrings by calling f for every match
+$exports.regexp.replace_fun = $loader.loadprim("regexp@regexp_replace_fun",3)
+
+//'string? regexp_matched('regexp, n : int) -> Return the nth matched block by the regexp. If n is 0 then return the whole matched substring. If the nth matched block was optional and not matched, returns null
+$exports.regexp.matched = $loader.loadprim("regexp@regexp_matched",2)
+
+//'{ pos => int, len => int} regexp_matched_pos('regexp, n : int) -> Return the nth matched block position by the regexp. If n is 0 then return the whole matched substring position
+$exports.regexp.matched_pos = $loader.loadprim("regexp@regexp_matched_pos",2)
+
+////ENDREGION regexp
+
+
+////REGION: mysql
+$exports.mysql = $new(null)
+
+//void result_set_conv_date('result, function:1) -> Set the function that will convert a Date or DateTime string to the corresponding value.
+$exports.mysql.result_set_conv_date = $loader.loadprim("mysql@result_set_conv_date",2)
+
+//int result_get_length('result) -> Return the number of rows returned or affected
+$exports.mysql.result_get_length = $loader.loadprim("mysql@result_get_length",1)
+
+//int result_get_nfields('result) -> Return the number of fields in a result row
+$exports.mysql.result_get_nfields = $loader.loadprim("mysql@result_get_nfields",1)
+
+//object? result_next('result) -> Return the next row if available. A row is represented as an object, which fields have been converted to the corresponding Neko value (int, float or string). For Date and DateTime you can specify your own conversion function using result_set_conv_date. By default they're returned as plain strings. Additionally, the TINYINT(1) will be converted to either true or false if equal to 0.
+$exports.mysql.result_next = $loader.loadprim("mysql@result_next",1)
+
+//string result_get('result, n : int) -> Return the nth field of the current row
+$exports.mysql.result_get = $loader.loadprim("mysql@result_get",2)
+
+//int result_get_int('result, n : int) -> Return the nth field of the current row as an integer (or 0)
+$exports.mysql.result_get_int = $loader.loadprim("mysql@result_get_int",2)
+
+//float result_get_float('result, n : int) -> Return the nth field of the current row as a float (or 0)
+$exports.mysql.result_get_float = $loader.loadprim("mysql@result_get_float",2)
+
+//void close('connection) -> Close the connection. Any subsequent operation will fail on it
+$exports.mysql.close = $loader.loadprim("mysql@close",1)
+
+//void select_db('connection, string) -> Select the database
+$exports.mysql.select_db = $loader.loadprim("mysql@select_db",2)
+
+//'result request('connection, string) -> Execute an SQL request. Exception on error
+$exports.mysql.request = $loader.loadprim("mysql@request",2)
+
+//string escape('connection, string) -> Escape the string for inserting into a SQL request
+$exports.mysql.escape = $loader.loadprim("mysql@escape",2)
+
+//'connection connect({ host => string, port => int, user => string, pass => string, socket => string?}) -> Connect to a database using the connection informations
+$exports.mysql.connect = $loader.loadprim("mysql@connect",1)
+
+//array string result_get_fields_names( value o ) -> Return the fields names of the current row
+$exports.mysql.result_get_fields_names = $loader.loadprim("mysql@result_get_fields_names",1)
+
+//void set_conv_funs( value o, value fstring, value fdate, value fbytes ) -> Set three wrapper methods to be be called when creating a string, a date, and binary data in results
+$exports.mysql.set_conv_funs = $loader.loadprim("mysql@set_conv_funs",4)
+
+////ENDREGION: mysql
+
+
+////REGION: sqlite
+$exports.sqlite = $new(null)
+
+//'db connect(filename : string) -> Connect to a database
+$exports.sqlite.connect = $loader.loadprim("sqlite@connect",1)
+
+//void close('db) -> Close a database
+$exports.sqlite.close = $loader.loadprim("sqlite@close",1)
+
+//int last_insert_id('db) -> Get the last inserted id
+$exports.sqlite.last_insert_id = $loader.loadprim("sqlite@last_insert_id",1)
+
+//'result request('db, sql : string) -> Request a database
+$exports.sqlite.request = $loader.loadprim("sqlite@request",2)
+
+//int result_get_length('result) -> Get the number of rows in a result
+$exports.sqlite.result_get_length = $loader.loadprim("sqlite@result_get_length",1)
+
+//int result_get_nfields('result) -> Get the number of fields in a result
+$exports.sqlite.result_get_nfields = $loader.loadprim("sqlite@result_get_nfields",1)
+
+//object? result_next('result) -> Get the next row in a result
+$exports.sqlite.result_next = $loader.loadprim("sqlite@result_next",1)
+
+//string result_get('result, n : int) -> Get a field in a result
+$exports.sqlite.result_get = $loader.loadprim("sqlite@result_get",2)
+
+//int result_get_int('result, n : int) -> Get a field in a result as an int
+$exports.sqlite.result_get_int = $loader.loadprim("sqlite@result_get_int",2)
+
+//float result_get_float('result, n : int) -> Get a field in a result as a float
+$exports.sqlite.result_get_float = $loader.loadprim("sqlite@result_get_float",2)
+
+////ENDREGION: sqlite
+
+
+////REGION: zlib
+$exports.zlib = $new(null)
+
+//'dstream deflate_init(level : int) -> Open a compression stream with the given level of compression
+$exports.zlib.deflate_init = $loader.loadprim("zlib@deflate_init",1)
+
+//'void deflate_end('dstream) -> Close a compression stream
+$exports.zlib.deflate_end = $loader.loadprim("zlib@deflate_end",1)
+
+//'istream inflate_init(window_size : int?) -> Open a decompression stream
+$exports.zlib.inflate_init = $loader.loadprim("zlib@inflate_init",1)
+
+//'void inflate_end('istream) -> Close a decompression stream
+$exports.zlib.inflate_end = $loader.loadprim("zlib@inflate_end",1)
+
+//'void set_flush_mode('stream, string) -> Change the flush mode ("NO","SYNC","FULL","FINISH","BLOCK")
+$exports.zlib.set_flush_mode = $loader.loadprim("zlib@set_flush_mode",2)
+
+//'int32 get_adler32('stream) -> Returns the adler32 value of the stream
+$exports.zlib.get_adler32 = $loader.loadprim("zlib@get_adler32",1)
+
+//'int32 update_adler32(adler : 'int32, string, pos : int, len : int) -> Update an adler32 value with a substring
+$exports.zlib.update_adler32 = $loader.loadprim("zlib@update_adler32",4)
+
+//'int32 update_crc32(crc : 'int32, string, pos : int, len : int) -> Update a CRC32 value with a substring
+$exports.zlib.update_crc32 = $loader.loadprim("zlib@update_crc32",4)
+
+//'int deflate_bound('dstream, n : int) -> Return the maximum buffer size needed to write n bytes
+$exports.zlib.deflate_bound = $loader.loadprim("zlib@deflate_bound",2)
+
+//{ done => bool, read => int, write => int} deflate_buffer('dstream, src : string, srcpos : int, dst : string, dstpos : int) -> Compress a string
+$exports.zlib.deflate_buffer = $loader.loadprim("zlib@deflate_buffer",5)
+
+//{ done => bool, read => int, write => int} inflate_buffer('istream, src : string, srcpos : int, dst : string, dstpos : int) -> Decompress a string
+$exports.zlib.inflate_buffer = $loader.loadprim("zlib@inflate_buffer",5)
+
+////ENDREGION: zlib

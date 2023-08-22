@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 // AntlrTests.TinyC.Program.Main();
-AntlrTests.MyTinyC.Program.Main();
-// AntlrTests.NekoScript.Program.Main();
+// AntlrTests.MyTinyC.Program.Main();
+AntlrTests.NekoScript.Program.Main();
 // AntlrTests.OwOLang.Program.Main();
 
 // using System.Dynamic;
