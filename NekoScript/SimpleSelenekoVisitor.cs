@@ -58,6 +58,7 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
         
         var firstChild = context.GetChild(0);
 
+        //If the first child is a varlist, then it's a global variable declaration
         if (firstChild is SelenekoParser.VarlistContext varlistContext) {
             var varlist = (List<IParseTree>) context.varlist().Accept(this);
             var explist = (List<IParseTree>) context.explist().Accept(this);
@@ -65,9 +66,10 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
             var varlistParsed = varlist.Select(v => v.Accept(this)).ToList();
             var explistParsed = explist.Select(e => e.Accept(this)).ToList();
 
-            if (varlistParsed.Count > 0) {
-                output += "var ";
-            }
+            //Commented out because it's not needed
+            // if (varlistParsed.Count > 0) {
+            //     output += "var ";
+            // }
             
             for(var i=0; i<varlistParsed.Count; i++) {
                 output += $"{varlistParsed[i]} = {explistParsed[i]},";
@@ -111,7 +113,7 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     }
 
     public object VisitNamelist(SelenekoParser.NamelistContext context) {
-        throw new NotImplementedException();
+        return context.NAME().Select(n => n.GetText()).ToList();
     }
 
     public object VisitExplist(SelenekoParser.ExplistContext context) {
@@ -130,6 +132,14 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
                 _ => throw new NotImplementedException()
             };
         }
+        
+        if(firstChild is SelenekoParser.NumberContext numberContext) {
+            return numberContext.Accept(this);
+        }
+        
+        if(firstChild is SelenekoParser.StringContext stringContext) {
+            return stringContext.Accept(this);
+        }
 
         throw new NotImplementedException();
     }
@@ -147,19 +157,68 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     }
 
     public object VisitVar(SelenekoParser.VarContext context) {
-        throw new NotImplementedException();
+        var output = string.Empty;
+        var suffixes = context.varSuffix().Select(s => s.Accept(this)).ToList();
+        
+        var firstChild = context.GetChild(0);
+        
+        if (firstChild is TerminalNodeImpl terminalNode) {
+            output = firstChild.GetText();
+        }
+        else {
+            var exp = context.exp().Accept(this);
+            output = $"({exp})";
+        }
+
+        return suffixes.Aggregate(output, (current, suffix) => current + suffix);
     }
 
     public object VisitVarSuffix(SelenekoParser.VarSuffixContext context) {
-        throw new NotImplementedException();
+        var output = string.Empty;
+        
+        var hasNameAndArgs = context.nameAndArgs() != null;
+
+        if (hasNameAndArgs) {
+            var nameAndArgs = context.nameAndArgs().Select(n => n.Accept(this)).ToList();
+            output = nameAndArgs.Aggregate(output, (current, nameAndArg) => current + nameAndArg);
+        }
+        
+        var hasExp = context.exp() != null;
+
+        if (hasExp) {
+            output += $"[{context.exp().Accept(this)}]";
+        }
+        else {
+            output += $".{context.NAME().GetText()}";
+        }
+        
+        return output;
     }
 
     public object VisitNameAndArgs(SelenekoParser.NameAndArgsContext context) {
-        throw new NotImplementedException();
+        var firstChild = context.GetChild(0);
+        
+        var output = string.Empty;
+        
+        if (firstChild is not SelenekoParser.ArgsContext argsContext) {
+            var name = context.NAME().GetText();
+
+            output = $": {name}";
+        }
+        
+        var args = context.args().Accept(this);
+        
+        return $"{output}{args}";
     }
 
     public object VisitArgs(SelenekoParser.ArgsContext context) {
-        throw new NotImplementedException();
+        var firstChild = context.GetChild(0);
+
+        return firstChild switch {
+            TerminalNodeImpl terminalNode when terminalNode.GetText() == "(" => $"({context.explist().Accept(this)})",
+            SelenekoParser.TableconstructorContext tableconstructorContext => tableconstructorContext.Accept(this),
+            _ => context.@string().Accept(this)
+        };
     }
 
     public object VisitFunctiondef(SelenekoParser.FunctiondefContext context) {
@@ -171,19 +230,65 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     }
 
     public object VisitParlist(SelenekoParser.ParlistContext context) {
-        throw new NotImplementedException();
+        var firstChild = context.GetChild(0);
+        
+        if(firstChild is TerminalNodeImpl terminalNode && terminalNode.GetText() == "...") {
+            return "...";
+        }
+
+        var output = string.Empty;
+
+        var namelist = (List<string>) context.namelist().Accept(this);
+
+        output = namelist.Aggregate(output, (current, name) => current + $"{name},");
+
+        output = output.TrimEnd(',');
+
+        if (context.ChildCount <= 1) return output;
+        
+        var lastTwoChildren = context.children.ToList().GetRange(context.ChildCount - 2, 2);
+            
+        if(lastTwoChildren[0] is TerminalNodeImpl child1
+           && child1.GetText() == "..." 
+           && lastTwoChildren[1] is TerminalNodeImpl child2
+           && child2.GetText() == ","){
+            output += ", ...";
+        }
+
+        return output;
     }
 
     public object VisitTableconstructor(SelenekoParser.TableconstructorContext context) {
-        throw new NotImplementedException();
+        var fieldlist = context.fieldlist().Accept(this);
+        
+        return $"{{{fieldlist}}}";
     }
 
     public object VisitFieldlist(SelenekoParser.FieldlistContext context) {
-        throw new NotImplementedException();
+        var fields = context.field().Select(f => f.Accept(this)).ToList();
+        var fieldseps = context.fieldsep().Select(f => f.Accept(this)).ToList();
+        
+        var output = string.Empty;
+        
+        for (var i = 0; i < fields.Count; i++) {
+            output += $"{fields[i]}{fieldseps[i]}";
+        }
+        
+        return output;
     }
 
     public object VisitField(SelenekoParser.FieldContext context) {
-        throw new NotImplementedException();
+        var firstChild = context.GetChild(0);
+        
+        if (firstChild is not TerminalNodeImpl terminalNode) {
+            return firstChild.Accept(this);
+        }
+
+        if (firstChild.GetText() == "[") {
+            return $"[{context.exp(0).Accept(this)}] = {context.exp(1).Accept(this)}";
+        }
+        
+        return $"{context.NAME().GetText()} = {context.exp(0).Accept(this)}";
     }
 
     public object VisitFieldsep(SelenekoParser.FieldsepContext context) {
@@ -227,10 +332,23 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     }
 
     public object VisitNumber(SelenekoParser.NumberContext context) {
-        return context.GetText();
+        var output = context.GetText();
+        
+        if (!int.TryParse(output, out int number)) {
+            output += ".0";
+        }
+
+        return output;
     }
 
     public object VisitString(SelenekoParser.StringContext context) {
-        return new NotImplementedException();
+        var content = context.GetText();
+
+        if (content.StartsWith("[[")) {
+            //Remove first and last two characters (the [[ and ]]) and add quotes
+            content = $"'{content[2..^2]}'";
+        }
+        
+        return content;
     }
 }
