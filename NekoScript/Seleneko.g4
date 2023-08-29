@@ -115,7 +115,7 @@ stat
     | 'for' '(' namelist 'in' explist ')' ('{' block '}' | 'do' block 'end')
     | 'function' funcname funcbody
     | ('let' | 'local') 'function' NAME funcbody
-    | ('let' | 'local') attnamelist ('=' explist)?
+//    | ('let' | 'local') attnamelist ('=' explist)?
     | native_call
     ;
     
@@ -124,13 +124,13 @@ native_call
     | '~' NAME
     ;
 
-attnamelist
-    : NAME attrib (',' NAME attrib)*
-    ;
-
-attrib
-    : ('<' NAME '>')?
-    ;
+//attnamelist
+//    : NAME attrib (',' NAME attrib)*
+//    ;
+//
+//attrib
+//    : ('<' NAME '>')?
+//    ;
 
 laststat
     : 'return' explist? | 'break' | 'continue' ';'?
@@ -157,12 +157,12 @@ explist
     ;
 
 exp
-    : 'null' | 'nil' | 'false' | 'true'
-    | number
-    | string
-    | '...'
-    | functiondef
-    | prefixexp
+    : 'null' | 'nil' | 'false' | 'true' // done
+    | number // done
+    | string // done
+    | '...' // done
+    | functiondef //done
+    | prefixexp //done
     | tableconstructor
     | <assoc=right> exp operatorPower exp
     | operatorUnary exp

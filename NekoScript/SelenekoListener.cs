@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /Users/sneakyanimeow/RiderProjects/AntlrTests/NekoScript/Seleneko.g4 by ANTLR 4.12.0
+// Generated from C:/Users/meow/RiderProjects/AntlrTests/NekoScript\Seleneko.g4 by ANTLR 4.12.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -71,26 +71,6 @@ public interface ISelenekoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitNative_call([NotNull] SelenekoParser.Native_callContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SelenekoParser.attnamelist"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAttnamelist([NotNull] SelenekoParser.AttnamelistContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SelenekoParser.attnamelist"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAttnamelist([NotNull] SelenekoParser.AttnamelistContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SelenekoParser.attrib"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAttrib([NotNull] SelenekoParser.AttribContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SelenekoParser.attrib"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAttrib([NotNull] SelenekoParser.AttribContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SelenekoParser.laststat"/>.
 	/// </summary>

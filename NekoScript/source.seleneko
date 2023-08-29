@@ -1,2 +1,3 @@
-a = 50
-b = 2147483648
+~call_neko([[$loader.loadmodule("neko_binding", neko)]]);
+
+~export(neko, "not_neko");

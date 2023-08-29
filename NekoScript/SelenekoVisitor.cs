@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /Users/sneakyanimeow/RiderProjects/AntlrTests/NekoScript/Seleneko.g4 by ANTLR 4.12.0
+// Generated from C:/Users/meow/RiderProjects/AntlrTests/NekoScript\Seleneko.g4 by ANTLR 4.12.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -56,18 +56,6 @@ public interface ISelenekoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNative_call([NotNull] SelenekoParser.Native_callContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SelenekoParser.attnamelist"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAttnamelist([NotNull] SelenekoParser.AttnamelistContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SelenekoParser.attrib"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAttrib([NotNull] SelenekoParser.AttribContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SelenekoParser.laststat"/>.
 	/// </summary>

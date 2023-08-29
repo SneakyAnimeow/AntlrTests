@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /Users/sneakyanimeow/RiderProjects/AntlrTests/NekoScript/Seleneko.g4 by ANTLR 4.12.0
+// Generated from C:/Users/meow/RiderProjects/AntlrTests/NekoScript\Seleneko.g4 by ANTLR 4.12.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -84,30 +84,6 @@ public partial class SelenekoBaseListener : ISelenekoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNative_call([NotNull] SelenekoParser.Native_callContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SelenekoParser.attnamelist"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAttnamelist([NotNull] SelenekoParser.AttnamelistContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SelenekoParser.attnamelist"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAttnamelist([NotNull] SelenekoParser.AttnamelistContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SelenekoParser.attrib"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAttrib([NotNull] SelenekoParser.AttribContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SelenekoParser.attrib"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAttrib([NotNull] SelenekoParser.AttribContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SelenekoParser.laststat"/>.
 	/// <para>The default implementation does nothing.</para>
