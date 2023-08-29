@@ -163,7 +163,8 @@ exp
     | '...' // done
     | functiondef //done
     | prefixexp //done
-    | tableconstructor
+    | tableconstructor //non-output
+    | objectconstructor //non-output
     | <assoc=right> exp operatorPower exp
     | operatorUnary exp
     | exp operatorMulDivMod exp
@@ -200,7 +201,7 @@ nameAndArgs
     ;
 
 args
-    : '(' explist? ')' | tableconstructor | string
+    : '(' explist? ')' | tableconstructor | objectconstructor | string
     ;
 
 functiondef
@@ -214,9 +215,21 @@ funcbody
 parlist
     : namelist (',' '...')? | '...'
     ;
+    
+objectconstructor
+    : '{' objectfieldlist? '}'
+    ;
+    
+objectfieldlist
+    : objectfield (fieldsep objectfield)* fieldsep?
+    ;
+    
+objectfield
+    : NAME '=' exp
+    ;
 
 tableconstructor
-    : '{' fieldlist? '}'
+    : '[' fieldlist? ']'
     ;
 
 fieldlist
@@ -224,11 +237,11 @@ fieldlist
     ;
 
 field
-    : '[' exp ']' '=' exp | NAME '=' exp | exp
+    : exp
     ;
 
 fieldsep
-    : ',' | ';'
+    : ','
     ;
 
 operatorOr

@@ -242,6 +242,36 @@ public interface ISelenekoListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitParlist([NotNull] SelenekoParser.ParlistContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectconstructor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObjectconstructor([NotNull] SelenekoParser.ObjectconstructorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectconstructor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObjectconstructor([NotNull] SelenekoParser.ObjectconstructorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectfieldlist"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObjectfieldlist([NotNull] SelenekoParser.ObjectfieldlistContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectfieldlist"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObjectfieldlist([NotNull] SelenekoParser.ObjectfieldlistContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectfield"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObjectfield([NotNull] SelenekoParser.ObjectfieldContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectfield"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObjectfield([NotNull] SelenekoParser.ObjectfieldContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SelenekoParser.tableconstructor"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -6,6 +6,8 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     private Stack<string> _translationStack = new();
 
     public object Visit(IParseTree tree) {
+        _translationStack.Push(@"var neko = $loader.loadmodule(""neko_bindings"", $loader);");
+        
         tree.Accept(this);
 
         foreach (var s in _translationStack.Reverse()) {
@@ -61,23 +63,6 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
             var varlist = (List<IParseTree>) context.varlist().Accept(this);
             var explist = (List<IParseTree>) context.explist().Accept(this);
             
-            // var varlistParsed = varlist.Select(v => v.Accept(this)).ToList();
-            // var explistParsed = explist.Select(e => e.Accept(this)).ToList();
-            //
-            // //Commented out because it's not needed
-            // // if (varlistParsed.Count > 0) {
-            // //     output += "var ";
-            // // }
-            //
-            // for(var i=0; i<varlistParsed.Count; i++) {
-            //     output += $"{varlistParsed[i]} = {explistParsed[i]},";
-            // }
-            //
-            // output = output.TrimEnd(',');
-            // output += ";";
-            //
-            // _translationStack.Push(output);
-            
             for(var i=0; i<varlist.Count; i++) {
                 var varName = varlist[i].Accept(this);
                 _translationStack.Push($"{varName} = ");
@@ -92,6 +77,12 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
         if(firstChild is SelenekoParser.Native_callContext nativeCallContext) {
             nativeCallContext.Accept(this);
         }
+        
+        if(firstChild is SelenekoParser.LabelContext labelContext) {
+            _translationStack.Push(labelContext.Accept(this).ToString()!);
+        }
+        
+        //TODO: stats
 
         return null;
     }
@@ -110,16 +101,13 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
 
         if (name == "export" && isExp) {
             var operation = string.Empty;
-            
             var explist = (List<IParseTree>) context.explist().Accept(this);
-            
             var objectToExport = explist[0].Accept(this);
             
             operation += $"$exports";
 
             if (explist.Count > 1) {
                 var nameToExport = explist[1].Accept(this);
-                
                 operation += $".{nameToExport.ToString()[1..^1]}";
             }
             else {
@@ -223,7 +211,8 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
         }
         
         if(firstChild is SelenekoParser.TableconstructorContext tableconstructorContext) {
-            return tableconstructorContext.Accept(this);
+            tableconstructorContext.Accept(this);
+            return string.Empty;
         }
 
         if (context.operatorPower() != null) {
@@ -242,8 +231,55 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
         if (context.operatorMulDivMod() != null) {
             var exp1 = context.exp(0).Accept(this);
             var exp2 = context.exp(1).Accept(this);
+            var op = context.operatorMulDivMod().Accept(this);
+
+            if (op.ToString() != "//") {
+                return $"{exp1} {op} {exp2}";
+            }
+
+            return $"neko.math.math_floor(${exp1} / ${exp2})";
+        }
+        
+        if (context.operatorAddSub() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
             
-            return $"{exp1} {context.operatorMulDivMod().Accept(this)} {exp2}";
+            return $"{exp1} {context.operatorAddSub().Accept(this)} {exp2}";
+        }
+        
+        if (context.operatorStrcat() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
+            
+            return $"{exp1} + {exp2}";
+        }
+        
+        if (context.operatorComparison() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
+            
+            return $"{exp1} {context.operatorComparison().Accept(this)} {exp2}";
+        }
+        
+        if (context.operatorAnd() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
+            
+            return $"{exp1} && {exp2}";
+        }
+        
+        if (context.operatorOr() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
+            
+            return $"{exp1} || {exp2}";
+        }
+        
+        if (context.operatorBitwise() != null) {
+            var exp1 = context.exp(0).Accept(this);
+            var exp2 = context.exp(1).Accept(this);
+            
+            return $"{exp1} {context.operatorBitwise().Accept(this)} {exp2}";
         }
 
         throw new NotImplementedException();
@@ -399,37 +435,65 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
         return output;
     }
 
-    public object VisitTableconstructor(SelenekoParser.TableconstructorContext context) {
-        var fieldlist = context.fieldlist().Accept(this);
+    public object VisitObjectconstructor(SelenekoParser.ObjectconstructorContext context) {
+        _translationStack.Push("{");
         
-        return $"{{{fieldlist}}}";
+        context.objectfieldlist().Accept(this);
+        
+        _translationStack.Push("}");
+        
+        return null;
+    }
+
+    public object VisitObjectfieldlist(SelenekoParser.ObjectfieldlistContext context) {
+        foreach(var objectfield in context.objectfield()) {
+            objectfield.Accept(this);
+            _translationStack.Push(",");
+        }
+        
+        _translationStack.Pop();
+        
+        return null;
+    }
+
+    public object VisitObjectfield(SelenekoParser.ObjectfieldContext context) {
+        var name = context.NAME().GetText();
+        
+        _translationStack.Push($"var {name} => ");
+        
+        var exp = context.exp().Accept(this);
+        
+        _translationStack.Push(exp.ToString() ?? string.Empty);
+
+        return null;
+    }
+
+    public object VisitTableconstructor(SelenekoParser.TableconstructorContext context) {
+        _translationStack.Push("$array(");
+        
+        context.fieldlist().Accept(this);
+        
+        _translationStack.Push(")");
+
+        return null;
     }
 
     public object VisitFieldlist(SelenekoParser.FieldlistContext context) {
-        var fields = context.field().Select(f => f.Accept(this)).ToList();
-        var fieldseps = context.fieldsep().Select(f => f.Accept(this)).ToList();
-        
-        var output = string.Empty;
-        
-        for (var i = 0; i < fields.Count; i++) {
-            output += $"{fields[i]}{fieldseps[i]}";
+        foreach(var field in context.field()) {
+            field.Accept(this);
+            _translationStack.Push(",");
         }
         
-        return output;
+        _translationStack.Pop();
+        
+        return null;
     }
 
     public object VisitField(SelenekoParser.FieldContext context) {
-        var firstChild = context.GetChild(0);
+        var exp = context.exp().Accept(this);
+        _translationStack.Push(exp.ToString() ?? string.Empty);
         
-        if (firstChild is not TerminalNodeImpl terminalNode) {
-            return firstChild.Accept(this);
-        }
-
-        if (firstChild.GetText() == "[") {
-            return $"[{context.exp(0).Accept(this)}] = {context.exp(1).Accept(this)}";
-        }
-        
-        return $"{context.NAME().GetText()} = {context.exp(0).Accept(this)}";
+        return null;
     }
 
     public object VisitFieldsep(SelenekoParser.FieldsepContext context) {
@@ -445,7 +509,9 @@ public class SimpleSelenekoVisitor : ISelenekoVisitor<object> {
     }
 
     public object VisitOperatorComparison(SelenekoParser.OperatorComparisonContext context) {
-        return context.GetText();
+        var op = context.GetText()!;
+        
+        return op == "~= " ? "!=" : op;
     }
 
     public object VisitOperatorStrcat(SelenekoParser.OperatorStrcatContext context) {

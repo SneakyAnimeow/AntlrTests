@@ -159,6 +159,24 @@ public interface ISelenekoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParlist([NotNull] SelenekoParser.ParlistContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SelenekoParser.objectconstructor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObjectconstructor([NotNull] SelenekoParser.ObjectconstructorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SelenekoParser.objectfieldlist"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObjectfieldlist([NotNull] SelenekoParser.ObjectfieldlistContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SelenekoParser.objectfield"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObjectfield([NotNull] SelenekoParser.ObjectfieldContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SelenekoParser.tableconstructor"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

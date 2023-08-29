@@ -289,6 +289,42 @@ public partial class SelenekoBaseListener : ISelenekoListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParlist([NotNull] SelenekoParser.ParlistContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectconstructor"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObjectconstructor([NotNull] SelenekoParser.ObjectconstructorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectconstructor"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObjectconstructor([NotNull] SelenekoParser.ObjectconstructorContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectfieldlist"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObjectfieldlist([NotNull] SelenekoParser.ObjectfieldlistContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectfieldlist"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObjectfieldlist([NotNull] SelenekoParser.ObjectfieldlistContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SelenekoParser.objectfield"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObjectfield([NotNull] SelenekoParser.ObjectfieldContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SelenekoParser.objectfield"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObjectfield([NotNull] SelenekoParser.ObjectfieldContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SelenekoParser.tableconstructor"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

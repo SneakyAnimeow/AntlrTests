@@ -1,1 +1,0 @@
-$loader.loadmodule("neko_bindings", $loader);
